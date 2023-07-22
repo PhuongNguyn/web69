@@ -5,31 +5,51 @@ const bcrypt = require("bcryptjs")
 const userModel = require("../models/user.model")
 const Joi = require("joi")
 
-const login = (req, res) => {
+const login = async (req, res, next) => {
     const username = req.body.username
     const userPassword = req.body.password
 
-    const result = readFile("user.json")
-
-    const checkExistUser = result.find(item => item.username == username)
-
-    if (!checkExistUser) {
-        return res.status(404).json({ message: "Khong tim thay user" })
-    }
-
-    const checkPassword = bcrypt.compareSync(userPassword, checkExistUser.password)
-
-    if (!checkPassword) {
-        return res.status(400).json({ message: "Sai mat khau" })
-    }
-
-    const token = jwt.sign({ userId: checkExistUser.userId }, process.env.SECRET_KEY, {
-        expiresIn: "1h"
+    const userSchema = Joi.object({
+        username: Joi.string().min(6).max(32).required(),
+        password:  Joi.string().min(6).max(32).required()
     })
 
-    const { password, ...returnUser } = checkExistUser
+    try {
+        const validate = userSchema.validate(req.body)
 
-    return res.status(200).json({ token, user: returnUser })
+        if(validate.error){
+            return res.status(400).json({ messages: validate.error.message })
+        }
+
+        const checkExistUser = await userModel.findOne({
+            username: username
+        }).lean()
+
+        if(!checkExistUser){
+            return res.status(404).json({message: "User does not exist"})
+        }
+
+        const checkPassword = bcrypt.compareSync(userPassword, checkExistUser.password)
+
+        if(!checkPassword){
+            return res.status(401).json({message: "Password is not correct"})
+        }
+
+        const token = jwt.sign({userId: checkExistUser._id}, process.env.SECRET_KEY, {
+            expiresIn: '1d'
+        })
+
+        const {password, ...returnUser} = checkExistUser
+
+        return res.status(200).json({
+            user: returnUser,
+            token
+        })
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json(error)
+    }
+
 }
 
 const getUser = (req, res) => {
@@ -66,7 +86,6 @@ const createUser = async (req, res) => {
             username: username
         })
 
-
         if (checkUser) {
             return res.status(400).json({ message: "User is exist" })
         }
@@ -74,12 +93,10 @@ const createUser = async (req, res) => {
         const salt = bcrypt.genSaltSync()
         const hash = bcrypt.hashSync(userPassword, salt)
 
-        const user = new userModel({
+        const user = await userModel.create({
             username: username,
             password: hash
         })
-
-        const result = await user.save()
 
         return res.status(200).json({
             message: "Create user success",

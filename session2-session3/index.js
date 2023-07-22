@@ -10,14 +10,16 @@ const {connectToDb} = require("./database")
 
 dotenv.config()
 app.use(express.json())
+
 app.use(cors({
     origin: "*"
 }))
-app.use(morgan("combined"))
+
 connectToDb()
-app.use(router)
+app.use(morgan("combined"))
 app.use(express.static(path.join(__dirname, 'data')))
 
+app.use(router)
 
 app.listen(PORT, () => {
     console.log("Server is listening on http://localhost:"+PORT)
