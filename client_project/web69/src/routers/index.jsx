@@ -25,8 +25,8 @@ const AppRouter = () => {
             <Route path="/auth" element={<NonAuthLayout/>}>
                 <Route path="/auth/login" element={<Login />}/>
             </Route>
-            {(user?._id || userFromLocalStorage?._id) && <Route path="/app" element={<MainLayout/>}>
-                <Route path="/app/dashboard" element={<Dashboard/>}/>
+            {(user?._id || userFromLocalStorage?._id) && <Route path="/" element={<MainLayout/>}>
+                <Route path="/dashboard" element={<Dashboard/>}/>
             </Route>}
             <Route path="/*" element={<NotFoundPage/>}/>
         </Routes>

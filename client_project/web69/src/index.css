@@ -6,3 +6,7 @@
 body{
   min-height: 100vh;
 }
+
+.app-wrapper{
+  min-height: 100vh;
+}
