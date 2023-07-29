@@ -4,9 +4,14 @@ import { login } from '../../services';
 import {useDispatch} from 'react-redux'
 import {Link} from "react-router-dom"
 import HeaderLogin from '../../components/HeaderLogin';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
+import { saveToLocalStorage } from '../../utils';
+import { login as loginAction } from '../../redux/actions/user'
 
 const Login = () => {
     const [form] = Form.useForm();
+    const navigate = useNavigate()
     const dispatch = useDispatch()
 
     const onFinish = async (values) => {
@@ -16,10 +21,14 @@ const Login = () => {
 
             const result = await login(username, password)
 
-            dispatch({type: "LOGIN", payload: result.data.user})
+            toast.success("Đăng nhập thành công")
+            dispatch(loginAction(result.data.user))
+            saveToLocalStorage("user", JSON.stringify(result.data.user))
+            navigate("/app/dashboard")
 
         } catch (error) {
             console.log(error)
+            toast.error("Đăng nhập thất bại")
         }
     };
 
@@ -31,7 +40,6 @@ const Login = () => {
     return (
         <div className='' style={{ marginTop: '20px' }}>
             <HeaderLogin />
-            <Link to='/app/dashboard'>test</Link>
             <Form
                 form={form}
                 name="basic"

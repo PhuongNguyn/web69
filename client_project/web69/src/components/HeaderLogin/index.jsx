@@ -6,7 +6,6 @@ const HeaderLogin = () => {
     console.log('rerender in header login')
     return (
         <>
-            {user.username ? user.username : "Chua dang nhap"}
         </>
     )
 }
