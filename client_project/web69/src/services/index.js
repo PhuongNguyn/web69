@@ -8,3 +8,4 @@ const instance = axios.create({
 export const login = (username, password) => {
     return instance.post('/user/login', {username, password})
 }
+

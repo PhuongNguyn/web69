@@ -22,8 +22,9 @@ const Login = () => {
             const result = await login(username, password)
 
             toast.success("Đăng nhập thành công")
-            dispatch(loginAction(result.data.user))
+            dispatch(loginAction(result.data?.user))
             saveToLocalStorage("user", JSON.stringify(result.data.user))
+            saveToLocalStorage("token", JSON.stringify(result.data?.token))
             navigate("/dashboard")
 
         } catch (error) {
