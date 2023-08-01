@@ -8,6 +8,7 @@ import {
 } from '@ant-design/icons';
 import { Layout, Menu, Button, theme } from 'antd';
 import { Outlet } from 'react-router';
+import { Link } from 'react-router-dom';
 const { Header, Sider, Content } = Layout;
 const MainLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -22,24 +23,10 @@ const MainLayout = () => {
           theme="dark"
           mode="inline"
           defaultSelectedKeys={['1']}
-          items={[
-            {
-              key: '1',
-              icon: <UserOutlined />,
-              label: 'nav 1',
-            },
-            {
-              key: '2',
-              icon: <VideoCameraOutlined />,
-              label: 'nav 2',
-            },
-            {
-              key: '3',
-              icon: <UploadOutlined />,
-              label: 'nav 3',
-            },
-          ]}
-        />
+        >
+          <Menu.Item><Link to={'/dashboard'}>Dashboard</Link></Menu.Item>
+          <Menu.Item><Link to={'/product-management'}>Quản lí sản phẩm</Link></Menu.Item>
+          </Menu>
       </Sider>
       <Layout>
         <Header

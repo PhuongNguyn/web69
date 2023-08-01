@@ -52,12 +52,6 @@ const login = async (req, res, next) => {
 
 }
 
-const getUser = (req, res) => {
-    const data = fs.readFileSync('user.json')
-    const result = readFile('user.json')
-
-    return res.status(200).json({ result })
-}
 
 const createUser = async (req, res) => {
     const userSchema = Joi.object({
@@ -125,7 +119,6 @@ const deleteUser = (req, res) => {
 }
 
 module.exports = {
-    getUser,
     createUser,
     deleteUser,
     login

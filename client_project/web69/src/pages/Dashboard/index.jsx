@@ -4,7 +4,7 @@ const Dashboard = () => {
     const user = useSelector((state)=>state.user)
 
     return (
-        <>{user.username}</>    
+        <></>    
     )
 }
 

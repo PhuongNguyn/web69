@@ -9,6 +9,8 @@ import { useNavigate } from "react-router"
 import { useEffect } from "react"
 import { getValueFromLocalStorage } from "../utils"
 import { login } from "../redux/actions/user"
+import ProductManagement from "../pages/ProductManagement"
+import AddEditProduct from "../pages/AddEditProduct"
 
 const AppRouter = () => {
     const user = useSelector((state) => state.user)
@@ -27,6 +29,8 @@ const AppRouter = () => {
             </Route>
             {(user?._id || userFromLocalStorage?._id) && <Route path="/" element={<MainLayout/>}>
                 <Route path="/dashboard" element={<Dashboard/>}/>
+                <Route path="/product-management" element={<ProductManagement />}/>
+                <Route path="/add-product" element={<AddEditProduct />}/>
             </Route>}
             <Route path="/*" element={<NotFoundPage/>}/>
         </Routes>

@@ -7,6 +7,7 @@ const cors = require("cors")
 const PORT = 3001
 const dotenv = require("dotenv")
 const {connectToDb} = require("./database")
+const fileUpload = require("express-fileupload")
 
 dotenv.config()
 app.use(express.json())
@@ -14,6 +15,8 @@ app.use(express.json())
 app.use(cors({
     origin: "*"
 }))
+
+app.use(fileUpload());
 
 connectToDb()
 app.use(morgan("combined"))
