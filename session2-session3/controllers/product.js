@@ -7,7 +7,7 @@ const createProduct = async (req, res) => {
         const user = req.user?._id
        const result = await uploadImage(req.files.image)
 
-       console.log(uploadImage)
+       console.log(result)
 
         // const product = await productModel.create({
         //     ...data, 
