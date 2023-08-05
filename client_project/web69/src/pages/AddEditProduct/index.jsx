@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { UploadOutlined } from '@ant-design/icons';
 import { useForm } from "antd/es/form/Form";
 import { createProduct } from "../../services";
+import {toast} from 'react-hot-toast'
 
 const AddEditProduct = () => {
     const editorRef = useRef(null);
@@ -31,6 +32,8 @@ const AddEditProduct = () => {
             data.append("image", image.originFileObj)
 
             const result = await createProduct(data)
+            toast.success("Tao san pham thanh cong")
+            
         } catch (error) {
             console.log(error)
         }
