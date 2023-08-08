@@ -25,7 +25,10 @@ const getProduct = async (req, res) => {
         const pageSize = req.query.pageSize || 10
         const pageIndex = req.query.pageIndex || 1
 
-        const products = await productModel.find().skip(pageSize * pageIndex - pageSize).limit(pageSize)
+        const products = await productModel.find().skip(pageSize * pageIndex - pageSize).limit(pageSize).populate({
+            select: "-password",
+            path: "user"
+        })
         const count = await productModel.countDocuments()
         const totalPage = Math.ceil(count / pageSize) 
 

@@ -8,7 +8,7 @@ const Product = mongoose.Schema({
     user: {
         type: mongoose.Types.ObjectId,
         requird: true,
-        ref: "users"
+        ref: "user"
     },
     slug: {
         type: String,
