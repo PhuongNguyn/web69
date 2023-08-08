@@ -1,9 +1,10 @@
-import { Breadcrumb, Button, Pagination, Table } from "antd"
+import { Breadcrumb, Button, Pagination, Popconfirm, Table } from "antd"
 import { Link } from "react-router-dom"
 import {AiOutlineEdit} from "react-icons/ai"
 import {BsFillTrashFill} from 'react-icons/bs'
-import { getProduct } from "../../services"
+import { deleteProduct, getProduct } from "../../services"
 import { useEffect, useState } from "react"
+import { toast } from "react-hot-toast"
 
 const ProductManagement = () => {
     const [pageSize, setPageSize] = useState(3)
@@ -11,6 +12,19 @@ const ProductManagement = () => {
     const [count, setCount] = useState(0)
     const [totalPage, setTotalPage] = useState(0)
     const [products, setProducts] = useState([])
+
+    const deleteProductById = async (id) => {
+        try {
+            const result = await deleteProduct(id)
+            setProducts(products.filter(product => product?._id != id))
+            setCount(count - 1)
+            toast.success("Xoá sản phẩm thành công")
+        } catch (error) {
+            toast.error("Xoá sản phẩm thất bại")
+            console.log(error)
+        }
+    }
+
     const column = [
         {
             title: "Tên sản phẩm",
@@ -18,7 +32,8 @@ const ProductManagement = () => {
         },
         {
             title: "Người tạo",
-            dataIndex: "user"
+            dataIndex: "user",
+            render: (value) => value.username
         },
         {
             title: "Gía",
@@ -30,8 +45,8 @@ const ProductManagement = () => {
         },
         {
             title: "Action",
-            render: () => {
-                return <><AiOutlineEdit/><BsFillTrashFill/></>
+            render: (_, record) => {
+                return <><AiOutlineEdit/><Popconfirm title={"Bạn có muốn xoá sản phẩm này"} onConfirm={()=>deleteProductById(record?._id)}><BsFillTrashFill/></Popconfirm></>
             }
         }
     ]
@@ -71,6 +86,7 @@ const ProductManagement = () => {
                     setPageSize(pageSize)
                 }}
                 showSizeChanger
+                showTotal={(total)=><p>{total} sản phẩm</p>}
             />
         </div>
     )

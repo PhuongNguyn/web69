@@ -43,3 +43,7 @@ export const createProduct = (data) => {
 export const getProduct = (pageSize, pageIndex) => {
     return instance.get(`/product?pageSize=${pageSize}&pageIndex=${pageIndex}`)
 }
+
+export const deleteProduct = (id) => {
+    return authInstance.delete(`/product/${id}`)
+}
