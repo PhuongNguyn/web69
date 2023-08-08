@@ -40,3 +40,6 @@ export const createProduct = (data) => {
     return authInstance.post('/product', data)
 }
 
+export const getProduct = (pageSize, pageIndex) => {
+    return instance.get(`/product?pageSize=${pageSize}&pageIndex=${pageIndex}`)
+}

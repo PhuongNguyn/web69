@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import { saveToLocalStorage } from '../../utils';
 import { login as loginAction } from '../../redux/actions/user'
+import { BsFacebook } from 'react-icons/bs';
 
 const Login = () => {
     const [form] = Form.useForm();
@@ -42,7 +43,6 @@ const Login = () => {
         <div className='' style={{ marginTop: '20px', minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <div>
                 <h1 style={{ textAlign: 'center', marginBottom: '20px' }}>Đăng nhập</h1>
-
                 <Form
                     form={form}
                     name="basic"

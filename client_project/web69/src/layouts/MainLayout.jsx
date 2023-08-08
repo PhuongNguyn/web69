@@ -25,7 +25,8 @@ const MainLayout = () => {
           defaultSelectedKeys={['1']}
         >
           <Menu.Item><Link to={'/dashboard'}>Dashboard</Link></Menu.Item>
-          <Menu.Item><Link to={'/product-management'}>Quản lí sản phẩm</Link></Menu.Item>
+          <Menu.Item><Link to={'/product-management'}>Dành cho quản lí sản phẩm</Link></Menu.Item>
+          <Menu.Item><Link to={'/social-media-management'}>Dành cho mạng xã hội</Link></Menu.Item>
           </Menu>
       </Sider>
       <Layout>

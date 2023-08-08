@@ -11,6 +11,7 @@ import { getValueFromLocalStorage } from "../utils"
 import { login } from "../redux/actions/user"
 import ProductManagement from "../pages/ProductManagement"
 import AddEditProduct from "../pages/AddEditProduct"
+import SocialMedia from "../pages/SocialMedia"
 
 const AppRouter = () => {
     const user = useSelector((state) => state.user)
@@ -31,8 +32,10 @@ const AppRouter = () => {
                 <Route path="/dashboard" element={<Dashboard/>}/>
                 <Route path="/product-management" element={<ProductManagement />}/>
                 <Route path="/add-product" element={<AddEditProduct />}/>
+                <Route path="/social-media-management" element={<SocialMedia/>}/>
             </Route>}
             <Route path="/*" element={<NotFoundPage/>}/>
+        
         </Routes>
     )
 }
