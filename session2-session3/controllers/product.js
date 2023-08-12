@@ -60,8 +60,35 @@ const deleteProduct = async (req, res) => {
     }
 }
 
+const getById = async (req, res) => {
+    try {
+        const id = req.params.id
+
+        const product = await productModel.findById(id)
+
+        return res.status(200).json(product)
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json(error)
+    }
+}
+
+const updateProduct = async (req, res) => {
+    try {
+        const id = req.params.id
+        
+        const result = await productModel.findByIdAndUpdate(id, req.body)
+
+        return res.status(200).json({message:"Success"})
+    } catch (error) {
+        return res.status(500).json(error)
+    }
+}
+
 module.exports = {
     createProduct,
     getProduct,
-    deleteProduct
+    deleteProduct,
+    getById,
+    updateProduct
 }
