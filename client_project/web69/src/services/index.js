@@ -47,3 +47,11 @@ export const getProduct = (pageSize, pageIndex) => {
 export const deleteProduct = (id) => {
     return authInstance.delete(`/product/${id}`)
 }
+
+export const getProductById = (id) => {
+    return instance.get(`/product/${id}`)
+}
+
+export const editProduct = (id, data) => {
+    return authInstance.put(`/product/${id}`, data)
+} 

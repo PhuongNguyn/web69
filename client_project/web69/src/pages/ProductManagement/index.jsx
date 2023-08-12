@@ -46,7 +46,7 @@ const ProductManagement = () => {
         {
             title: "Action",
             render: (_, record) => {
-                return <><AiOutlineEdit/><Popconfirm title={"Bạn có muốn xoá sản phẩm này"} onConfirm={()=>deleteProductById(record?._id)}><BsFillTrashFill/></Popconfirm></>
+                return <><Link to={`/add-product/${record?._id}`}><AiOutlineEdit/></Link><Popconfirm title={"Bạn có muốn xoá sản phẩm này"} onConfirm={()=>deleteProductById(record?._id)}><BsFillTrashFill/></Popconfirm></>
             }
         }
     ]

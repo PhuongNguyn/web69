@@ -1,18 +1,36 @@
 import { Breadcrumb, Button, Form, Input, Upload } from "antd"
 import { Editor } from '@tinymce/tinymce-react';
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { UploadOutlined } from '@ant-design/icons';
 import { useForm } from "antd/es/form/Form";
-import { createProduct } from "../../services";
+import { createProduct, editProduct, getProductById } from "../../services";
 import {toast} from 'react-hot-toast'
+import { useParams } from "react-router";
 
 const AddEditProduct = () => {
+    const { id } = useParams()
     const editorRef = useRef(null);
     const [description, setDescription] = useState("")
     const [content, setContent] = useState("")
     const [image, setImage] = useState(null)
 
     const [form] = Form.useForm();
+
+    const getProduct = async () => {
+        try {   
+            const result = await getProductById(id)
+
+            setContent(result.data?.content)
+            setDescription(result.data?.description)
+            setImage(result.data?.image)
+            form.setFieldValue("name", result.data?.name)
+            form.setFieldValue("slug", result.data?.slug)
+            form.setFieldValue("price", result.data?.price)
+            form.setFieldValue("quantity", result.data?.quantity)
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     const uploadProduct = async () => {
         try {
@@ -29,19 +47,33 @@ const AddEditProduct = () => {
             data.append("price", price)
             data.append("description", description)
             data.append("content", content)
-            data.append("image", image.originFileObj)
+            if(image){
+                data.append("image", image.originFileObj)
+            }
 
-            const result = await createProduct(data)
-            toast.success("Tao san pham thanh cong")
+            if(!id){
+                const result = await createProduct(data)
+                toast.success("Tao san pham thanh cong")
+            }else{
+                const result = await editProduct(id, data)
+                toast.success("Cap nhat san pham thanh cong")
+            }
             
         } catch (error) {
             console.log(error)
         }
     }
 
+
+    useEffect(()=>{
+        if(id){
+            getProduct()
+        }
+    },[])
+
     return (
         <>
-            <Breadcrumb items={[{ title: "Thêm sản phẩm" }]} />
+            <Breadcrumb items={[{ title: id ? "Sửa sản phẩm":"Thêm sản phẩm" }]} />
             <Form form={form} style={{ marginTop: '15px' }} onFinish={uploadProduct}>
                 <Form.Item label="Tên sản phẩm" name="name">
                     <Input placeholder="Nhập tên sản phẩm" />
@@ -61,7 +93,7 @@ const AddEditProduct = () => {
                         apiKey="5s5cq0qxphgwr8wjxmjp4m3hjywrm9czcx1h2dj8pj4tvq3l"
                         onEditorChange={(value) => setDescription(value)}
                         onInit={(evt, editor) => editorRef.current = editor}
-                        initialValue="Please input description"
+                        value={description}
                         init={{
                             height: 300,
                             menubar: false,
@@ -84,7 +116,7 @@ const AddEditProduct = () => {
                     <Editor
                         apiKey="5s5cq0qxphgwr8wjxmjp4m3hjywrm9czcx1h2dj8pj4tvq3l"
                         onEditorChange={(value) => setContent(value)}
-                        initialValue="Please input content"
+                        value={content}
                         init={{
                             height: 300,
                             menubar: true,
@@ -108,7 +140,7 @@ const AddEditProduct = () => {
                         <Button icon={<UploadOutlined />}>Click to Upload</Button>
                     </Upload>
                 </div>
-                <Button style={{marginTop: '15px', marginBottom: '15px'}} type="primary" htmlType="submit">Đăng sản phẩm</Button>
+                <Button style={{marginTop: '15px', marginBottom: '15px'}} type="primary" htmlType="submit">{id ? "Cập nhật sản phẩm" : "Đăng sản phẩm"}</Button>
             </Form>
 
         </>
